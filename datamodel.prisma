@@ -1,0 +1,20 @@
+type Restaurant {
+  id: ID! @unique
+  name: String! @unique
+  cuisine: Cuisine!
+  votes: [Vote!]!
+  bracketLocation: Int!
+}
+
+type Vote {
+  id: ID! @unique
+  createdAt: DateTime!
+  voter: String!
+  token: String!
+  restaurant: Restaurant!
+}
+
+type Cuisine {
+  id: ID! @unique
+  name: String!
+}
