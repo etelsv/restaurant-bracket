@@ -12,6 +12,7 @@ async function main() {
   console.log(allUsers);
   */
 
+  /*
   await prisma.createRestaurant({
     name: "rosegarden",
     bracketLocation: 4,
@@ -21,7 +22,40 @@ async function main() {
       }
     }
   });
+*/
+  var restaurantName, allRestaurants, allRestaurantNames;
 
+  allRestaurantNames = [];
+
+  allRestaurants = await prisma.restaurants();
+
+  function listRestaurants(allRestaurants) {
+    for (var i = 0; i < allRestaurants.length; i++) {
+      allRestaurantNames.push(allRestaurants[i].name);
+      //console.log(allRestaurants[i]);
+    }
+  }
+
+  async function showVotes(allRestaurantNames) {
+    for (var i = 0; i < allRestaurantNames.length; i++) {
+      const voteInfo = await prisma
+        .restaurant({ name: allRestaurantNames[i] })
+        .votes();
+      console.log(
+        allRestaurantNames[i] + " has " + voteInfo.length + " votes "
+      );
+    }
+  }
+
+  listRestaurants(allRestaurants);
+  console.log(allRestaurantNames);
+  showVotes(allRestaurantNames);
+  //const voteInfo = await prisma.restaurant({ name: restaurantName }).votes();
+  //console.log(allRestaurants);
+  //const allVotes = await prisma.votes();
+  //console.log(allVotes);
+
+  //console.log(allRestaurants);
   console.log("hello");
 }
 
