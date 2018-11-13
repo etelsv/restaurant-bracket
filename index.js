@@ -1,4 +1,6 @@
 const { prisma } = require("./generated/prisma-client");
+const { request } = require('graphql-request');
+
 
 // A `main` function so that we can use async/await
 async function main() {
@@ -24,9 +26,45 @@ async function main() {
   });
 */
   var restaurantName, allRestaurants, allRestaurantNames;
+  const endpoint = `https://eu1.prisma.sh/beigeotter-539e45/foodbracket/dev`
+  
+  const query = `query {
+    restaurants {
+    name
+    id
+    cuisine {
+      name
+    }
+  }
+}`
 
-  allRestaurantNames = [];
+  const data = await request(endpoint, query)
 
+dataStringified = JSON.stringify(data, undefined, 2);
+  //console.log(dataStringified)
+//console.log(dataStringified["restaurants"]);
+
+//console.log(data.restaurants[0].name);
+
+wwcRestaurants = data.restaurants;
+//console.log(wwcRestaurants);
+//then need to loop through
+//trying to display this on a page :) 
+
+async function wwcShowRestaurants(wwcRestaurants){
+for (var i = 0; i < wwcRestaurants.length; i++){
+  console.log(wwcRestaurants[i].name);
+}};
+
+let listElement = document.getElementById("list");
+
+console.log(listElement);
+
+
+wwcShowRestaurants(wwcRestaurants);
+
+    //allRestaurantNames = [];
+/*
   allRestaurants = await prisma.restaurants();
 
   function listRestaurants(allRestaurants) {
@@ -47,6 +85,7 @@ async function main() {
     }
   }
 
+
   listRestaurants(allRestaurants);
   console.log(allRestaurantNames);
   showVotes(allRestaurantNames);
@@ -57,6 +96,7 @@ async function main() {
 
   //console.log(allRestaurants);
   console.log("hello");
+  */
 }
 
 main().catch(e => console.error(e));

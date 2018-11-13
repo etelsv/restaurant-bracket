@@ -19,6 +19,7 @@
   "homepage": "https://github.com/etelsv/restaurant-bracket#readme",
   "dependencies": {
     "graphql": "^14.0.2",
+    "graphql-request": "^1.8.2",
     "prisma-client-lib": "^1.20.1"
   }
 }
