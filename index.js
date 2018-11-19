@@ -5,26 +5,73 @@ const { request } = require("graphql-request");
 async function main() {
   // Does this work?
 
-  const hello_something = something => console.log("hello, " + something);
+  // const hello_something = something => console.log("hello, " + something);
 
-  hello_something("etel");
+  //hello_something("etel");
 
   // TODO: Display all restaurants
   // This is a QUERY
-  const allRestaurants = await prisma.restaurants();
+  //const allRestaurants = await prisma.restaurants();
 
-  console.log(allRestaurants);
+  //console.log(allRestaurants);
+
+  //with a graphqlquery
+  const allRestaurantsDeepData = await prisma.$graphql(`
+    {
+      allRestaurantsDeep: restaurants {
+        name
+        bracketLocation
+        cuisine {
+          id
+          name
+        }
+        votes {
+          createdAt
+          id
+        }
+      }
+    }`);
+
+  const { allRestaurantsDeep } = allRestaurantsDeepData;
+
+  //   // deconstructor
+  // const {restaurants} = allRestaurantsDeep
+
+  console.log(allRestaurantsDeep);
+  // for (var i = 0; i < allRestaurantsDeep.length; i++) {
+  //   console.log(allRestaurantsDeep[i].votes.length);
+  // }
+
+  // allRestaurantsDeep.forEach(restaurant => {
+  //   // template string
+  //   const fn = () => "Hello World";
+  //   console.log(`${restaurant.name} ${fn()} ${restaurant.votes.length}`);
+  // });
+
+  // const restaurantsOnRoids = allRestaurantsDeep.map(r => {
+  //   r.voteCount = r.votes.length;
+  //   return r;
+  // });
+
+  const restaurantsOnRoids = allRestaurantsDeep.map(r => {
+    return {
+      ...r,
+      voteCount: r.votes.length
+    };
+  });
+
+  console.log(restaurantsOnRoids);
 
   // TODO: Display votes for each restaurant
   // This is a QUERY
 
   const allRestaurantVotes = await prisma.restaurants().votes();
 
-  console.log(allRestaurantVotes);
+  // console.log(allRestaurantVotes);
 
   // TODO: Vote for a restaurant
   // This is a MUTATION
-
+  /*
   function vote(vote, token, name){return {
     "voter: "la",
   token: "hahaha",
@@ -41,7 +88,7 @@ async function main() {
       }
     }
   });
-
+*/
   // TODO: Order restaurants by vote
   // 🤷🏼‍♀️
 
